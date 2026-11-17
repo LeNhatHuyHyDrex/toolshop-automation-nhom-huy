@@ -21,7 +21,16 @@ class HomePage(BasePage):
         self.sort_select = page.get_by_test_id("sort")
         self.sorting_completed = page.get_by_test_id("sorting_completed")
         self.product_prices = page.get_by_test_id("product-price")
-        # TODO B2/B4 (later): price_slider_max = page.get_by_role("slider").nth(1)
+        self.slider_max = page.get_by_role("slider").nth(1)
+        self.footer_github_link = page.get_by_test_id("footer-learn-github")
+
+    def category_checkbox(self, name: str):
+        return self.page.get_by_label(name)
+
+    def filter_by_category(self, name: str):
+        with self.page.expect_response(lambda r: PRODUCT_LIST.search(r.url) is not None):
+            self.category_checkbox(name).check()
+        return self
 
     def open(self):
         """Return only after the first product list has arrived.
