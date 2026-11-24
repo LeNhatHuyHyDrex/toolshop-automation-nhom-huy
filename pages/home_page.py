@@ -22,7 +22,10 @@ class HomePage(BasePage):
         self.sorting_completed = page.get_by_test_id("sorting_completed")
         self.product_prices = page.get_by_test_id("product-price")
         self.slider_max = page.get_by_role("slider").nth(1)
-        self.footer_github_link = page.get_by_test_id("footer-learn-github")
+        # The public site tags the link with data-test; the Toolshop built for CI may not, so fall back to the href.
+        self.footer_github_link = (
+            page.get_by_test_id("footer-learn-github").or_(page.locator("a[href*='github.com']")).first
+        )
 
     def category_checkbox(self, name: str):
         return self.page.get_by_label(name)
